@@ -1,7 +1,7 @@
 class CreateEntries < ActiveRecord::Migration[5.0]
   def change
     create_table :entries, id: :uuid do |t|
-      t.references :journal, type: :uuid, foreign_key: {on_delete: :restrict}, null: false
+      t.references :journal, type: :uuid, foreign_key: { on_delete: :restrict}, null: false
 
       t.string :caption
       t.datetime :timestamp

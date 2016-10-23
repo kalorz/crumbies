@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161023142033) do
+ActiveRecord::Schema.define(version: 20161023170910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,26 @@ ActiveRecord::Schema.define(version: 20161023142033) do
     t.integer  "entries_count", default: 0, null: false
   end
 
+  create_table "media", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "media_component_id",             null: false
+    t.string   "caption"
+    t.string   "file_id"
+    t.string   "file_filename"
+    t.integer  "file_size"
+    t.string   "file_content_type"
+    t.string   "file_url"
+    t.integer  "position",           default: 0, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.index ["media_component_id"], name: "index_media_on_media_component_id", using: :btree
+  end
+
+  create_table "media_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "media_count", default: 0, null: false
+  end
+
   create_table "text_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text     "body"
     t.text     "formatted_body"
@@ -53,4 +73,5 @@ ActiveRecord::Schema.define(version: 20161023142033) do
 
   add_foreign_key "entries", "journals", on_delete: :restrict
   add_foreign_key "entry_sections", "entries", on_delete: :restrict
+  add_foreign_key "media", "media_components", on_delete: :restrict
 end

@@ -5,6 +5,7 @@ class Entry < ApplicationRecord
 
   has_many :sections, -> { order(:position) },
            class_name: 'EntrySection',
+           inverse_of: :entry,
            dependent:  :destroy
 
 end
