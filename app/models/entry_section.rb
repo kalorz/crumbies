@@ -3,4 +3,8 @@ class EntrySection < ApplicationRecord
              inverse_of:    :sections,
              counter_cache: :sections_count
 
+  belongs_to :component,
+             dependent:   :destroy,
+             polymorphic: true
+
 end

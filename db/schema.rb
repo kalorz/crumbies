@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161022222204) do
+ActiveRecord::Schema.define(version: 20161023142033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,10 +27,13 @@ ActiveRecord::Schema.define(version: 20161022222204) do
   end
 
   create_table "entry_sections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "entry_id",               null: false
-    t.integer  "position",   default: 1, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.uuid     "entry_id",                   null: false
+    t.string   "component_type",             null: false
+    t.uuid     "component_id",               null: false
+    t.integer  "position",       default: 1, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["component_type", "component_id"], name: "index_entry_sections_on_component_type_and_component_id", unique: true, using: :btree
     t.index ["entry_id"], name: "index_entry_sections_on_entry_id", using: :btree
   end
 
@@ -39,6 +42,13 @@ ActiveRecord::Schema.define(version: 20161022222204) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "entries_count", default: 0, null: false
+  end
+
+  create_table "text_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text     "body"
+    t.text     "formatted_body"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   add_foreign_key "entries", "journals", on_delete: :restrict

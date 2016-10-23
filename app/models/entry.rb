@@ -3,7 +3,7 @@ class Entry < ApplicationRecord
              inverse_of:    :entries,
              counter_cache: true
 
-  has_many :sections,
+  has_many :sections, -> { order(:position) },
            class_name: 'EntrySection',
            dependent:  :destroy
 
