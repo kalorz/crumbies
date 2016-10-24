@@ -1,11 +1,11 @@
-class Entry < ApplicationRecord
+class Story < ApplicationRecord
   belongs_to :journal,
-             inverse_of:    :entries,
+             inverse_of:    :stories,
              counter_cache: true
 
   has_many :sections, -> { order(:position) },
            class_name: 'EntrySection',
-           inverse_of: :entry,
+           inverse_of: :story,
            dependent:  :destroy
 
 end

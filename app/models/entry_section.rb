@@ -1,5 +1,5 @@
 class EntrySection < ApplicationRecord
-  belongs_to :entry,
+  belongs_to :story,
              inverse_of:    :sections,
              counter_cache: :sections_count
 

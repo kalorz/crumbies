@@ -6,11 +6,11 @@ RSpec.describe EntrySection, type: :model do
     let(:component_types) { [TextComponent, MediaComponent] }
 
     describe '#destroy' do
-      let(:entry) { Journal.create.entries.create }
+      let(:story) { Journal.create.stories.create }
 
       it 'destroys the component' do
         component_types.each do |component_type|
-          section = entry.sections.create(component: component_type.new)
+          section = story.sections.create(component: component_type.new)
 
           expect { section.destroy }.to change(component_type, :count).by(-1)
         end
@@ -18,7 +18,7 @@ RSpec.describe EntrySection, type: :model do
     end
 
     context 'when destroying the associated component' do
-      let(:section) { Journal.create.entries.create.sections.create }
+      let(:section) { Journal.create.stories.create.sections.create }
 
       it 'cannot destroy component with associated section' do
         component_types.each do |component_type|

@@ -1,5 +1,5 @@
 class Journal < ApplicationRecord
-  has_many :entries,
+  has_many :stories,
            inverse_of: :journal,
            dependent:  :destroy
 
