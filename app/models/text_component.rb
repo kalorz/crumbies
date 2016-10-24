@@ -1,5 +1,5 @@
 class TextComponent < ApplicationRecord
-  has_one :entry_section,
+  has_one :story_part,
           as:        :component,
           dependent: :restrict_with_error
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe EntrySection, type: :model do
+RSpec.describe StoryPart, type: :model do
 
   context 'given associated component' do
     let(:component_types) { [TextComponent, MediaComponent] }
@@ -10,23 +10,23 @@ RSpec.describe EntrySection, type: :model do
 
       it 'destroys the component' do
         component_types.each do |component_type|
-          section = story.sections.create(component: component_type.new)
+          part = story.parts.create(component: component_type.new)
 
-          expect { section.destroy }.to change(component_type, :count).by(-1)
+          expect { part.destroy }.to change(component_type, :count).by(-1)
         end
       end
     end
 
     context 'when destroying the associated component' do
-      let(:section) { Journal.create.stories.create.sections.create }
+      let(:part) { Journal.create.stories.create.parts.create }
 
-      it 'cannot destroy component with associated section' do
+      it 'cannot destroy component with associated story part' do
         component_types.each do |component_type|
-          component = component_type.create(entry_section: section)
+          component = component_type.create(story_part: part)
 
           expect { component.destroy }.not_to change(component_type, :count)
 
-          expect(component.errors[:base]).to include 'Cannot delete record because a dependent entry section exists'
+          expect(component.errors[:base]).to include 'Cannot delete record because a dependent story part exists'
         end
       end
     end

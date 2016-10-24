@@ -3,8 +3,8 @@ class Story < ApplicationRecord
              inverse_of:    :stories,
              counter_cache: true
 
-  has_many :sections, -> { order(:position) },
-           class_name: 'EntrySection',
+  has_many :parts, -> { order(:position) },
+           class_name: 'StoryPart',
            inverse_of: :story,
            dependent:  :destroy
 

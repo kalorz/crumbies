@@ -16,17 +16,6 @@ ActiveRecord::Schema.define(version: 20161023202701) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "entry_sections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "story_id",                   null: false
-    t.string   "component_type",             null: false
-    t.uuid     "component_id",               null: false
-    t.integer  "position",       default: 1, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["component_type", "component_id"], name: "index_entry_sections_on_component_type_and_component_id", unique: true, using: :btree
-    t.index ["story_id"], name: "index_entry_sections_on_story_id", using: :btree
-  end
-
   create_table "journals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "caption"
     t.datetime "created_at",                null: false
@@ -79,13 +68,24 @@ ActiveRecord::Schema.define(version: 20161023202701) do
   end
 
   create_table "stories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "journal_id",                 null: false
+    t.uuid     "journal_id",              null: false
     t.string   "caption"
     t.datetime "timestamp"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "parts_count", default: 0, null: false
+    t.index ["journal_id"], name: "index_stories_on_journal_id", using: :btree
+  end
+
+  create_table "story_parts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "story_id",                   null: false
+    t.string   "component_type",             null: false
+    t.uuid     "component_id",               null: false
+    t.integer  "position",       default: 1, null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.integer  "sections_count", default: 0, null: false
-    t.index ["journal_id"], name: "index_stories_on_journal_id", using: :btree
+    t.index ["component_type", "component_id"], name: "index_story_parts_on_component_type_and_component_id", unique: true, using: :btree
+    t.index ["story_id"], name: "index_story_parts_on_story_id", using: :btree
   end
 
   create_table "text_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 20161023202701) do
     t.datetime "updated_at",     null: false
   end
 
-  add_foreign_key "entry_sections", "stories", on_delete: :restrict
   add_foreign_key "media", "media_components", on_delete: :restrict
   add_foreign_key "milestone_types", "milestone_categories", on_delete: :restrict
   add_foreign_key "stories", "journals", on_delete: :restrict
+  add_foreign_key "story_parts", "stories", on_delete: :restrict
 end
