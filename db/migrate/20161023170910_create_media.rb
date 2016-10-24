@@ -10,7 +10,7 @@ class CreateMedia < ActiveRecord::Migration[5.0]
       t.string :file_content_type
       t.string :file_url
 
-      t.integer :position, default: 0, null: false
+      t.integer :position, default: 1, null: false
 
       t.timestamps
     end

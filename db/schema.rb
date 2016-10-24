@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161023170910) do
+ActiveRecord::Schema.define(version: 20161023202701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20161023170910) do
     t.integer  "file_size"
     t.string   "file_content_type"
     t.string   "file_url"
-    t.integer  "position",           default: 0, null: false
+    t.integer  "position",           default: 1, null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.index ["media_component_id"], name: "index_media_on_media_component_id", using: :btree
@@ -62,6 +62,30 @@ ActiveRecord::Schema.define(version: 20161023170910) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "media_count", default: 0, null: false
+  end
+
+  create_table "milestone_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "caption"
+    t.text     "description"
+    t.text     "formatted_description"
+    t.string   "color"
+    t.integer  "position",              default: 1, null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "milestone_types_count", default: 0, null: false
+  end
+
+  create_table "milestone_types", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "milestone_category_id",             null: false
+    t.string   "caption"
+    t.text     "description"
+    t.text     "formatted_description"
+    t.integer  "minimum_months"
+    t.integer  "maximum_months"
+    t.integer  "position",              default: 1, null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["milestone_category_id"], name: "index_milestone_types_on_milestone_category_id", using: :btree
   end
 
   create_table "text_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -74,4 +98,5 @@ ActiveRecord::Schema.define(version: 20161023170910) do
   add_foreign_key "entries", "journals", on_delete: :restrict
   add_foreign_key "entry_sections", "entries", on_delete: :restrict
   add_foreign_key "media", "media_components", on_delete: :restrict
+  add_foreign_key "milestone_types", "milestone_categories", on_delete: :restrict
 end
