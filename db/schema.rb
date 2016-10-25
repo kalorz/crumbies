@@ -24,23 +24,14 @@ ActiveRecord::Schema.define(version: 20161023202701) do
   end
 
   create_table "media", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "media_component_id",             null: false
     t.string   "caption"
     t.string   "file_id"
     t.string   "file_filename"
     t.integer  "file_size"
     t.string   "file_content_type"
     t.string   "file_url"
-    t.integer  "position",           default: 1, null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.index ["media_component_id"], name: "index_media_on_media_component_id", using: :btree
-  end
-
-  create_table "media_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "media_count", default: 0, null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "milestone_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -95,7 +86,6 @@ ActiveRecord::Schema.define(version: 20161023202701) do
     t.datetime "updated_at",     null: false
   end
 
-  add_foreign_key "media", "media_components", on_delete: :restrict
   add_foreign_key "milestone_types", "milestone_categories", on_delete: :restrict
   add_foreign_key "stories", "journals", on_delete: :restrict
   add_foreign_key "story_parts", "stories", on_delete: :restrict

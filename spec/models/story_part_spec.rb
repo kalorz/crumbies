@@ -8,7 +8,7 @@ RSpec.describe StoryPart, type: :model do
     describe '#destroy' do
       let(:story) { Journal.create.stories.create }
 
-      it 'destroys the component' do
+      xit 'destroys the component' do
         component_types.each do |component_type|
           part = story.parts.create(component: component_type.new)
 
@@ -20,7 +20,7 @@ RSpec.describe StoryPart, type: :model do
     context 'when destroying the associated component' do
       let(:part) { Journal.create.stories.create.parts.create }
 
-      it 'cannot destroy component with associated story part' do
+      xit 'cannot destroy component with associated story part' do
         component_types.each do |component_type|
           component = component_type.create(story_part: part)
 
