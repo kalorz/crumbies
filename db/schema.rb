@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161023202701) do
+ActiveRecord::Schema.define(version: 20161025154706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "children", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "gender"
+    t.date     "date_of_birth"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "journals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "caption"
@@ -42,11 +51,11 @@ ActiveRecord::Schema.define(version: 20161023202701) do
     t.integer  "position",              default: 1, null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.integer  "milestone_types_count", default: 0, null: false
+    t.integer  "samples_count",         default: 0, null: false
   end
 
-  create_table "milestone_types", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "milestone_category_id",             null: false
+  create_table "milestone_samples", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "category_id",                       null: false
     t.string   "caption"
     t.text     "description"
     t.text     "formatted_description"
@@ -55,7 +64,6 @@ ActiveRecord::Schema.define(version: 20161023202701) do
     t.integer  "position",              default: 1, null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.index ["milestone_category_id"], name: "index_milestone_types_on_milestone_category_id", using: :btree
   end
 
   create_table "stories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -86,7 +94,7 @@ ActiveRecord::Schema.define(version: 20161023202701) do
     t.datetime "updated_at",     null: false
   end
 
-  add_foreign_key "milestone_types", "milestone_categories", on_delete: :restrict
+  add_foreign_key "milestone_samples", "milestone_categories", column: "category_id", on_delete: :restrict
   add_foreign_key "stories", "journals", on_delete: :restrict
   add_foreign_key "story_parts", "stories", on_delete: :restrict
 end
