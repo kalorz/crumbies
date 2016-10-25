@@ -3,8 +3,4 @@ class StoryPart < ApplicationRecord
              inverse_of:    :parts,
              counter_cache: :parts_count
 
-  belongs_to :component,
-             dependent:   :destroy,
-             polymorphic: true
-
 end

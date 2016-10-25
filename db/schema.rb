@@ -77,13 +77,10 @@ ActiveRecord::Schema.define(version: 20161025154706) do
   end
 
   create_table "story_parts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "story_id",                   null: false
-    t.string   "component_type",             null: false
-    t.uuid     "component_id",               null: false
-    t.integer  "position",       default: 1, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["component_type", "component_id"], name: "index_story_parts_on_component_type_and_component_id", unique: true, using: :btree
+    t.uuid     "story_id",               null: false
+    t.integer  "position",   default: 1, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["story_id"], name: "index_story_parts_on_story_id", using: :btree
   end
 
