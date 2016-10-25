@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025154706) do
+ActiveRecord::Schema.define(version: 20161025173424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20161025154706) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.integer  "samples_count",         default: 0, null: false
+    t.integer  "milestones_count",      default: 0, null: false
   end
 
   create_table "milestone_samples", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -64,6 +65,16 @@ ActiveRecord::Schema.define(version: 20161025154706) do
     t.integer  "position",              default: 1, null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.integer  "milestones_count",      default: 0, null: false
+  end
+
+  create_table "milestones", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "category_id"
+    t.uuid     "sample_id"
+    t.string   "caption"
+    t.datetime "timestamp"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "stories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -95,6 +106,8 @@ ActiveRecord::Schema.define(version: 20161025154706) do
   end
 
   add_foreign_key "milestone_samples", "milestone_categories", column: "category_id", on_delete: :restrict
+  add_foreign_key "milestones", "milestone_categories", column: "category_id", on_delete: :restrict
+  add_foreign_key "milestones", "milestone_samples", column: "sample_id", on_delete: :restrict
   add_foreign_key "stories", "journals", on_delete: :restrict
   add_foreign_key "story_parts", "stories", on_delete: :restrict
   add_foreign_key "text_components", "story_parts", on_delete: :restrict

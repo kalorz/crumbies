@@ -12,9 +12,9 @@ class CreateMilestoneSamples < ActiveRecord::Migration[5.0]
       t.integer :position, default: 1, null: false
 
       t.timestamps
-    end
 
-    add_foreign_key :milestone_samples, :milestone_categories, column: :category_id, on_delete: :restrict
+      t.foreign_key :milestone_categories, column: :category_id, on_delete: :restrict
+    end
 
     add_column :milestone_categories, :samples_count, :integer, default: 0, null: false
   end
