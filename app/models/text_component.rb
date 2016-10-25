@@ -1,6 +1,5 @@
 class TextComponent < ApplicationRecord
-  has_one :story_part,
-          as:        :component,
-          dependent: :restrict_with_error
+  belongs_to :text_story_part,
+             inverse_of: :text_component
 
 end

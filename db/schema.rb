@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20161025154706) do
 
   create_table "story_parts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "story_id",               null: false
+    t.string   "type",                   null: false
     t.integer  "position",   default: 1, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -85,13 +86,16 @@ ActiveRecord::Schema.define(version: 20161025154706) do
   end
 
   create_table "text_components", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "story_part_id",  null: false
     t.text     "body"
     t.text     "formatted_body"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["story_part_id"], name: "index_text_components_on_story_part_id", unique: true, using: :btree
   end
 
   add_foreign_key "milestone_samples", "milestone_categories", column: "category_id", on_delete: :restrict
   add_foreign_key "stories", "journals", on_delete: :restrict
   add_foreign_key "story_parts", "stories", on_delete: :restrict
+  add_foreign_key "text_components", "story_parts", on_delete: :restrict
 end

@@ -3,6 +3,7 @@ class CreateStoryParts < ActiveRecord::Migration[5.0]
     create_table :story_parts, id: :uuid do |t|
       t.references :story, type: :uuid, foreign_key: { on_delete: :restrict }, null: false
 
+      t.string :type, null: false
       t.integer :position, default: 1, null: false
 
       t.timestamps
